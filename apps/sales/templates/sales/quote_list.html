@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Lista de Cotizaciones</h1>
+<ul>
+  {% for quote in quotes %}
+  <li>{{ quote.name }} - {{ quote.total }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Lista de Sucursales</h1>
+<a href="{% url 'sucursal_create' %}">Crear nueva sucursal</a>
+<ul>
+  {% for sucursal in sucursales %}
+  <li>
+    <a href="{% url 'sucursal_detail' sucursal.pk %}">{{ sucursal.nombre }}</a>
+    (<a href="{% url 'sucursal_update' sucursal.pk %}">Editar</a>)
+  </li>
+  {% empty %}
+  <li>No hay sucursales registradas.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

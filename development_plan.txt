@@ -1,0 +1,161 @@
+## Plan de Desarrollo Detallado: Sistema Integral de Inteligencia de Ventas
+
+Este plan te guiará a través de la construcción de tu plataforma, dividiéndola en fases manejables.
+
+### **Fase 1: Configuración Esencial y Gestión de Datos Core** 🏗️
+
+Esta fase establece los cimientos de tu aplicación, incluyendo la configuración básica, el manejo de usuarios y las entidades fundamentales de tu negocio: clientes y productos.
+
+**1. Configuración del Proyecto y Entorno**
+    * **Inicialización del Proyecto:**
+        * ~~Crea el proyecto Django y las aplicaciones iniciales (`python manage.py startproject sales_intelligence_platform .`).~~
+        * ~~Define la estructura modular con la carpeta `apps/` para tus aplicaciones.~~
+    * **Configuración de Entornos:**
+        * ~~Establece configuraciones separadas para desarrollo (`development.py`) y producción (`production.py`) dentro de `config/settings/`.~~
+        * ~~Configura la conexión a **PostgreSQL** y asegúrate de que `pgAdmin4` pueda interactuar con ella.~~
+    * **Estructura Base HTML:**
+        * Diseña y crea tu plantilla `templates/base.html` para la estructura general de tu interfaz de usuario (barra de navegación, pie de página, etc.).
+        * Crea una página de inicio simple en `templates/home.html`.
+    * **Archivos Estáticos y Media:**
+        * ~~Configura la gestión de archivos estáticos (`static/`) para CSS, JavaScript, imágenes.~~
+        * ~~Configura el manejo de archivos de medios (`media/`) para cargas de usuarios.~~
+
+**2. Gestión de Usuarios y Roles (`apps/users/`)**
+    * **Modelo de Usuario Personalizado:**
+        * ~~Define el **`CustomUser`** model extendiendo `AbstractUser` para incluir campos específicos como **rol** (Asesor, Gerente, Administrador), **compañía** y **sucursal**.~~
+        * ~~Configura Django para usar este modelo de usuario.~~
+    * **Autenticación y Autorización:**
+        * Implementa las vistas y plantillas para **registro, inicio de sesión, cierre de sesión y restablecimiento de contraseña**.
+        * Configura los **roles** básicos para los usuarios.
+
+**3. Gestión de Clientes (`apps/clients/`)**
+    * **Modelo de Cliente:**
+        * ~~Crea el modelo **`Client`** con campos para información de contacto, la compañía, el asesor asignado y un campo inicial para **`potential_purchase_value`** (que luego será alimentado por IA).~~
+    * **Funcionalidades CRUD:**
+        * Desarrolla las vistas (Listar, Ver Detalle, Crear, Editar, Eliminar) para los clientes.
+        * Crea las plantillas HTML correspondientes para cada operación (`client_list.html`, `client_detail.html`, `client_form.html`).
+    * **Asignación de Asesores:**
+        * Permite la **asignación de carteras** de clientes a asesores, ya sea de forma individual o general.
+
+**4. Gestión de Productos (`apps/products/`)**
+    * **Modelo de Producto:**
+        * ~~Crea el modelo **`Product`** con detalles como nombre, categoría, descripción, y asegúrate de especificar la **unidad de medida en litros** y precios en dólares.~~
+    * **Funcionalidades CRUD:**
+        * Implementa las vistas (Listar, Ver Detalle, Crear, Editar, Eliminar) para los productos.
+        * Crea las plantillas HTML necesarias (`product_list.html`, `product_detail.html`, `product_form.html`).
+
+---
+
+### **Fase 2: Transacciones de Ventas y Reportes de Cumplimiento** 📊
+
+Esta fase se enfoca en el corazón del sistema: el registro de transacciones de ventas y la capacidad de medir el rendimiento.
+
+**5. Registro de Transacciones de Ventas (`apps/sales/`)**
+    * **Modelos de Cotizaciones y Facturas:**
+        * Define los modelos **`Quote`** y **`Invoice`**, junto con sus ítems (`QuoteItem`, `InvoiceItem`).
+        * **Implementa el "Snapshotting"**: Asegúrate de que, al crear una cotización o factura, se guarden los detalles específicos del producto (nombre, precio, etc.) y del cliente (nombre, dirección) **en ese momento**, para evitar que futuros cambios en los datos maestros afecten la información histórica de la transacción.
+    * **Funcionalidades CRUD y Enlace:**
+        * Desarrolla vistas para crear, editar, consultar y eliminar cotizaciones y facturas.
+        * Implementa la lógica para **vincular cotizaciones con facturas** si una factura se origina de una cotización.
+    * **Presentaciones de Ventas:**
+        * Crea el modelo `Presentation` para registrar cómo se hizo la venta.
+
+**6. Comparación y Cumplimiento Porcentual (`apps/sales/`, `apps/reporting/`)**
+    * **Lógica de Comparación:**
+        * Desarrolla funciones en tu capa de servicios (`apps/sales/services.py`) para **comparar los montos cotizados contra los facturados**.
+    * **Cálculo de Cumplimiento:**
+        * Implementa el cálculo del **cumplimiento porcentual** (`(Facturado / Cotizado) * 100`) para diversas dimensiones:
+            * Por mes y por año.
+            * Por compañía y sucursal.
+            * Por asesor.
+            * Por presentación y por producto.
+    * **Reportes Tabulares Iniciales:**
+        * Crea vistas en `apps/reporting/` para mostrar estos datos de cumplimiento en tablas HTML básicas.
+
+---
+
+### **Fase 3: Gestión Avanzada de Metas y Acceso Granular** 🎯
+
+Esta fase introduce la capacidad de establecer metas complejas y asegurar que cada usuario vea solo la información relevante para su rol.
+
+**7. Asignación de Metas Multinivel (`apps/goals/`)**
+    * **Modelo de Metas:**
+        * Crea el modelo **`SalesGoal`** que permita definir metas a **nivel macro**, así como metas específicas **por compañía, por sucursal, por asesor, por producto y por cliente**.
+    * **Seguimiento de Cumplimiento de Metas:**
+        * Desarrolla la lógica para **comparar las ventas reales contra las metas establecidas** en cada uno de estos niveles.
+    * **Vistas de Gestión de Metas:**
+        * Implementa vistas para crear, editar y visualizar el cumplimiento de estas metas.
+
+**8. Seguridad y Autenticación Granular (`apps/users/`, `core/permissions/`)**
+    * **Roles y Permisos:**
+        * Refuerza los roles de usuario (Asesor, Gerente, Administrador) y define permisos explícitos para cada uno.
+    * **Permisos a Nivel de Objeto:**
+        * Integra **`django-guardian`** para permitir la **segmentación de la información**. Un asesor solo verá sus propios clientes, cotizaciones y ventas, mientras que un gerente podrá ver los de su equipo o sucursal.
+    * **Entidad de Configuración de Permisos:**
+        * Crea una sección (inicialmente en el panel de administración de Django, luego quizás una interfaz personalizada) donde un administrador pueda definir **quién puede ver, editar, crear, consultar y eliminar** cada tipo de información o entidad, según su cargo o rol.
+
+---
+
+### **Fase 4: Dashboards Interactivos y Reportes Descargables** 📈
+
+Esta fase se enfoca en la visualización de datos y la capacidad de generar informes profesionales.
+
+**9. Dashboards Interactivos y Personalizables (`apps/reporting/`)**
+    * **Selección de Librería:**
+        * Elige una librería para crear **dashboards interactivos** (ej. **`django-plotly-dash`** para integración Python-first, o **Chart.js** para mayor control frontend con JavaScript).
+    * **Diseño de Dashboards:**
+        * Crea paneles donde se puedan visualizar las **tendencias de ventas** (crecimiento, estacionalidad), el comportamiento de ventas y el cumplimiento de metas.
+    * **Personalización por Usuario:**
+        * Permite a los usuarios **filtrar y "armar" dashboards según sus necesidades** (ej. seleccionar rango de fechas, productos específicos, asesores, etc.).
+
+**10. Generación y Descarga de Reportes (`apps/reporting/`)**
+    * **Reportes PDF:**
+        * Implementa la generación de reportes en **formato PDF** (usando librerías como `WeasyPrint` o `ReportLab`).
+    * **Reportes Excel:**
+        * Implementa la generación de reportes en **formato Excel** (usando `openpyxl` o `django-excel`).
+    * **Filtros de Reporte:**
+        * Asegúrate de que los reportes permitan **filtros avanzados** para todas las dimensiones de cumplimiento mencionadas (mes, año, compañía, sucursal, asesor, presentación, producto).
+
+---
+
+### **Fase 5: Inteligencia Artificial y Preparación para Producción** 🧠🚀
+
+Esta fase introduce las capacidades de IA y prepara la aplicación para su lanzamiento.
+
+**11. Predicción y Proyección de Ventas con IA (`apps/ai_models/`)**
+    * **Módulos de IA:**
+        * Crea una aplicación dedicada a los modelos de IA (`apps/ai_models/`) con una estructura clara para el pipeline de ML.
+    * **Modelos de Pronóstico:**
+        * Implementa algoritmos de **predicción de ventas** como **ARIMA**, **Prophet** (para series de tiempo con estacionalidad y festivos) o **LSTM** (para patrones complejos).
+        * **Integración de "Potencial de Compra":** Utiliza el `potential_purchase_value` de los clientes como una característica para mejorar la precisión de las proyecciones.
+    * **Integración con Django:**
+        * Utiliza **Django REST Framework (DRF)** para exponer las predicciones de la IA a través de APIs.
+        * Considera **Celery** para el entrenamiento de modelos en segundo plano o para predicciones periódicas.
+
+**12. Análisis de IA y Sugerencias Estratégicas (`apps/ai_models/`)**
+    * **Informes Inteligentes:**
+        * Desarrolla funcionalidades de IA que ayuden a **crear informes** relacionados con las **tendencias y el comportamiento de las ventas**.
+    * **Análisis y Sugerencias:**
+        * Implementa lógica de IA que ayude en el **análisis profundo** y genere **sugerencias** para el establecimiento de metas y estrategias de venta (ej. identificar productos con baja rotación, sugerir ajustes en los objetivos por región/asesor).
+
+**13. Preparación Final para Producción**
+    * **Optimización de Rendimiento:**
+        * Implementa estrategias de **caché** de Django y optimiza consultas de la base de datos (índices, `select_related`, `prefetch_related`).
+        * Utiliza **Celery** para tareas asíncronas intensivas (generación de reportes grandes, reentrenamiento de modelos de IA).
+    * **Contenerización y Orquestación:**
+        * Crea **`Dockerfile`** para la aplicación.
+        * Configura **`docker-compose.yml`** para orquestar la aplicación (con Gunicorn), PostgreSQL y Redis (para Celery).
+    * **Pruebas Exhaustivas:**
+        * Realiza pruebas unitarias, de integración y funcionales para asegurar la robustez del sistema.
+    * **Seguridad:**
+        * Audita la seguridad, aplicando las mejores prácticas (validación de entradas, protección CSRF/XSS, gestión de secretos, HTTPS).
+
+---
+
+### **Lanzamiento a Producción** 🚀
+
+Una vez que todas las fases anteriores estén completadas y validadas, podrás proceder con el despliegue final.
+
+* **Configuración de Producción:** Aplica la configuración de `production.py`.
+* **Despliegue:** Despliega los contenedores Docker en un servidor de producción.
+* **Monitoreo:** Establece herramientas de monitoreo para la salud de la aplicación y la base de datos.

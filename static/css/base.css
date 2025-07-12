@@ -1,0 +1,534 @@
+/* Importar variables globales */
+@import url('variables.css');
+
+/*
+ * base.css - Estilos CSS base para el Sistema Integral de Inteligencia de Ventas
+ * Nueva propuesta de diseño inspirada en ClickUp y Monday.com.
+ */
+
+/* Estilos globales del cuerpo */
+body {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-text-dark); /* Texto principal */
+    background-color: var(--color-background-light); /* Fondo principal */
+    margin: 0;
+    padding: 0;
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                color var(--transition-speed) var(--transition-timing);
+    -webkit-font-smoothing: antialiased; /* Suavizado de fuentes */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset básico para elementos de bloque */
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Contenedor central para limitar el ancho del contenido */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/*
+ * Contenedor principal de la aplicación (Flexbox)
+ * Organiza la barra lateral y el contenido principal.
+ */
+.app-wrapper {
+    display: flex;
+    min-height: 100vh;
+    padding-left: 250px;
+}
+
+/*
+ * Barra lateral (Sidebar)
+ * Diseño Minimalista y limpio, con sutiles sombras.
+ */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    min-width: 250px;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--color-surface-light); /* Fondo de superficie */
+    box-shadow: var(--shadow-md); /* Sombra para elevación */
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg) var(--spacing-md);
+    z-index: 100;
+    border-right: 1px solid var(--color-border-light); /* Borde sutil */
+}
+
+.sidebar__logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xxl);
+    color: var(--color-primary);
+    text-align: center;
+    padding: var(--spacing-sm) 0;
+    position: relative;
+    z-index: 101;
+}
+
+.sidebar__nav {
+    flex-grow: 1;
+}
+
+.sidebar__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar__item {
+    margin-bottom: var(--spacing-sm);
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center; /* Centrar verticalmente iconos y texto */
+    gap: 12px; /* Espaciado entre ícono y texto */
+    padding: 10px 20px; /* Ajustar el padding para una apariencia más limpia */
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Cambiar el color al pasar el ratón (hover) */
+.sidebar__link:hover .sidebar__icon,
+.sidebar__link.sidebar__link--active .sidebar__icon {
+    stroke: var(--color-primary-dark); /* Delineado naranja oscuro al hover */
+    transform: scale(1.25); /* Incrementa el tamaño del ícono */
+}
+
+/* Cambiar el color del icono cuando el enlace está activo */
+.sidebar__link--active .sidebar__icon {
+    stroke: var(--color-text-light); /* Delineado blanco en activo */
+    fill: none; /* Sin relleno en activo, solo delineado */
+}
+
+.sidebar__link:hover {
+    background-color: #f4f4f4; /* Fondo más claro al pasar el ratón */
+    border-radius: 5px;
+}
+
+/* Mejorar la visibilidad y consistencia de los iconos de la sidebar */
+.sidebar__icon {
+    stroke: var(--color-text-dark); /* Delineado negro por defecto */
+    fill: none; /* Sin relleno por defecto */
+    transition: stroke 0.3s, fill 0.3s;
+}
+
+/* Ajustar la alineación y separación entre iconos y texto en la barra lateral */
+.sidebar__link span {
+    margin-left: 0; /* Elimina margen adicional */
+    font-weight: 500; /* Fuente más gruesa para los textos */
+    line-height: 1.5; /* Mejorar la legibilidad del texto */
+}
+
+/* Mejorar la accesibilidad en el texto al cambiar a modo oscuro */
+body.dark-mode .sidebar__link {
+    color: #fff;
+}
+
+body.dark-mode .sidebar__link:hover {
+    background-color: #333; /* Fondo oscuro en modo oscuro */
+}
+
+/* Resaltar los enlaces activos */
+.sidebar__link.sidebar__link--active {
+    background-color: var(--color-primary-dark); /* Fondo más oscuro para el enlace activo */
+    color: var(--color-surface-light); /* Texto claro */
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 15px rgba(21, 26, 27, 0.8); /* Efecto de resplandor */
+}
+
+.sidebar__link.sidebar__link--active .sidebar__icon {
+    fill: var(--color-surface-light); /* Íconos blancos en modo oscuro */
+}
+
+/* Efecto de pulso en los íconos */
+.sidebar__icon {
+    animation: pulse 1.5s infinite;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Detener la animación cuando el ratón no está sobre el ícono */
+.sidebar__link:hover .sidebar__icon {
+    animation: none;
+    transform: scale(1.2); /* Aumentar el tamaño del ícono al hacer hover */
+}
+
+/* Animación de pulso */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Estilo para el pie de la barra lateral (contiene el toggle de tema) */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border-light);
+    text-align: center;
+}
+
+/*
+ * Área principal de contenido
+ * Contiene la barra superior y el contenido de las secciones.
+ */
+.main-area {
+    margin-top: 48px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-light);
+    transition: background-color var(--transition-speed) var(--transition-timing);
+    padding-left: var(--spacing-lg); /* Igual que el .container */
+    min-height: calc(100vh - 48px - 48px); /* header y footer */
+    overflow-y: auto;
+}
+
+/*
+ * Barra superior (Top Bar) dentro del área principal
+ * Contiene elementos globales como el toggle de tema.
+ */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 250px; /* Ancho de la sidebar */
+    right: 0;
+    z-index: 90; /* Menor que la sidebar */
+    background-color: var(--color-surface-light);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    min-height: 48px;
+    height: 48px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-light);
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing);
+}
+
+.top-bar__theme-toggle {
+    margin-right: auto;
+    margin-left: 0;
+    position: relative;
+    z-index: 91;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.main-area {
+    margin-top: 48px; /* Compensar el header fijo */
+}
+
+.top-bar__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.top-bar__link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-text-dark);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.top-bar__link:hover {
+    color: var(--color-primary-dark);
+}
+
+.top-bar__icon {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-primary);
+    fill: none;
+    transition: stroke 0.2s;
+}
+
+.top-bar__link:hover .top-bar__icon {
+    stroke: var(--color-primary-dark);
+}
+
+/* Botón de alternar tema (Dark Mode Toggle) */
+.theme-toggle {
+    background-color: var(--color-background-light); /* Fondo del botón igual al background */
+    border: 1px solid var(--color-border-light); /* Borde sutil */
+    border-radius: var(--radius-pill);
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--color-text-dark);
+    box-shadow: var(--shadow-sm); /* Sombra ligera */
+    transition: all var(--transition-speed) var(--transition-timing);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.theme-toggle:hover {
+    background-color: var(--color-border-light); /* Fondo ligeramente más oscuro al hover */
+    box-shadow: var(--shadow-md); /* Sombra un poco más pronunciada */
+}
+
+.theme-toggle:active {
+    box-shadow: var(--shadow-inset); /* Efecto de presionado */
+    transform: translateY(1px);
+}
+
+/*
+ * Contenido principal (Main Content)
+ */
+.main-content {
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    flex-grow: 1;
+}
+
+/*
+ * Secciones y Tarjetas
+ */
+.neumorphic-card { /* Ahora más como una tarjeta de Material Design */
+    background-color: var(--color-surface-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md); /* Sombra de elevación */
+    transition: all var(--transition-speed) var(--transition-timing);
+    border: 1px solid var(--color-border-light); /* Borde sutil */
+}
+
+/* Estilos para la sección Hero */
+.hero {
+    text-align: center;
+    margin-bottom: var(--spacing-xxxl);
+}
+
+.hero__content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-xxxl);
+}
+
+.hero__title {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
+.hero__description {
+    font-size: 1.1rem;
+    color: var(--color-text-medium);
+    margin-bottom: var(--spacing-xl);
+}
+
+/*
+ * Botones
+ */
+.primary-button, .secondary-button {
+    border: none;
+    padding: 12px 25px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: all var(--transition-speed) var(--transition-timing);
+    box-shadow: var(--shadow-sm); /* Sombra ligera por defecto */
+}
+
+.primary-button {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-md); /* Sombra más pronunciada al hover */
+    transform: translateY(-1px);
+}
+
+.primary-button:active {
+    box-shadow: var(--shadow-inset); /* Efecto de presionado */
+    transform: translateY(1px);
+}
+
+.secondary-button {
+    background-color: var(--color-surface-light); /* Fondo de superficie */
+    color: var(--color-text-dark);
+    border: 1px solid var(--color-border-light); /* Borde sutil */
+}
+
+.secondary-button:hover {
+    background-color: var(--color-background-light); /* Fondo ligeramente más oscuro al hover */
+    box-shadow: var(--shadow-md); /* Sombra más pronunciada al hover */
+    transform: translateY(-1px);
+    color: var(--color-primary); /* Resalta el texto al pasar el ratón */
+}
+
+.secondary-button:active {
+    box-shadow: var(--shadow-inset); /* Efecto de presionado */
+    transform: translateY(1px);
+}
+
+/*
+ * Sección de Características
+ */
+.features {
+    margin-bottom: var(--spacing-xxxl);
+}
+
+.features__title {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--color-text-dark);
+    margin-bottom: var(--spacing-xxl);
+    font-weight: 600;
+}
+
+.features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.features__card {
+    text-align: center;
+    padding: var(--spacing-xl);
+    transform: translateY(0);
+}
+
+.features__card:hover {
+    box-shadow: var(--shadow-lg); /* Sombra más grande al hover para indicar elevación */
+    transform: translateY(-5px);
+}
+
+.features__card-title {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+}
+
+.features__card-description {
+    color: var(--color-text-medium);
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-xl);
+}
+
+/*
+ * Pie de página de la aplicación (Footer)
+ */
+.app-footer {
+    background-color: var(--color-surface-light);
+    padding: 0 var(--spacing-lg);
+    min-height: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-medium);
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm); /* Sombra ligera */
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing);
+    margin-top: auto; /* Empuja el footer a la parte inferior del main-area */
+    border-top: 1px solid var(--color-border-light);
+}
+
+.app-footer .container {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+ * Responsive Design (Diseño Adaptativo)
+ */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        transition: left var(--transition-speed) var(--transition-timing);
+        z-index: 1000;
+        box-shadow: var(--shadow-lg); /* Sombra más fuerte cuando está oculta */
+    }
+
+    .main-area {
+        margin-left: 0;
+    }
+
+    body.sidebar-open .sidebar {
+        left: 0;
+    }
+
+    .container {
+        padding: var(--spacing-md);
+    }
+
+    .hero__content {
+        padding: var(--spacing-xl);
+    }
+
+    .hero__title {
+        font-size: 2rem;
+    }
+
+    .features__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .top-bar {
+        left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero__title {
+        font-size: 1.8rem;
+    }
+
+    .neumorphic-card {
+        padding: var(--spacing-lg);
+    }
+
+    .primary-button, .secondary-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Cambiar el ícono de "Iniciar Sesión" en la barra lateral */
+.sidebar__item--login .sidebar__icon {
+    content: url('/static/icons/new-login-icon.svg'); /* Ruta del nuevo ícono */
+    width: 24px;
+    height: 24px;
+    fill: var(--color-primary); /* Mantener el color naranja */
+}

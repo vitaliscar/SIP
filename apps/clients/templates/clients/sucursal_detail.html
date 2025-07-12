@@ -1,0 +1,6 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Detalle de Sucursal</h1>
+<p><strong>Nombre:</strong> {{ sucursal.nombre }}</p>
+<a href="{% url 'sucursal_update' sucursal.pk %}">Editar</a>
+<a href="{% url 'sucursal_list' %}">Volver a la lista</a>
+{% endblock %}
