@@ -2,4 +2,13 @@
 <h1>Perfil de Usuario</h1>
 <p>Nombre: {{ user.username }}</p>
 <p>Email: {{ user.email }}</p>
-{% endblock %}
+
+<form method="post" style="margin-top: 24px">
+  {% csrf_token %}
+  <button type="submit" class="primary-button" style="margin-top: 10px">
+    Guardar preferencia
+  </button>
+</form>
+{% if form.errors %}
+<div style="color: red">{{ form.errors }}</div>
+{% endif %} {% endblock %}

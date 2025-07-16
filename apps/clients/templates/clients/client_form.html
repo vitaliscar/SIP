@@ -1,7 +1,66 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Formulario de Cliente</h1>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Guardar</button>
-</form>
+<div class="container" style="max-width: 900px; margin: 0 auto">
+  <h2 style="margin-top: 30px; margin-bottom: 20px">Registro de Cliente</h2>
+  {% if success %}
+  <div class="alert alert-success">Cliente registrado exitosamente.</div>
+  {% endif %}
+  <form
+    method="post"
+    class="neumorphic-card"
+    style="
+      padding: 32px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 2px 16px #e0e0e0;
+    "
+  >
+    {% csrf_token %}
+    <h4>Datos Generales</h4>
+    <div class="form-row">
+      {{ form.sucursal|as_crispy_field }} {{ form.nombre|as_crispy_field }} {{
+      form.codigo_cliente|as_crispy_field }} {{ form.rif|as_crispy_field }} {{
+      form.tipo_cliente|as_crispy_field }} {{ form.estatus|as_crispy_field }} {{
+      form.fecha_registro|as_crispy_field }}
+    </div>
+    <hr />
+    <h4>Datos Comerciales</h4>
+    <div class="form-row">
+      {{ form.asesor|as_crispy_field }} {{ form.codigo_asesor|as_crispy_field }}
+      {{ form.asesor_nombre|as_crispy_field }} {{
+      form.canal_venta|as_crispy_field }} {{ form.segmento|as_crispy_field }} {{
+      form.grupo|as_crispy_field }} {{ form.subgrupo|as_crispy_field }} {{
+      form.clasificacion|as_crispy_field }} {{
+      form.frecuencia_visita|as_crispy_field }} {{ form.ruta|as_crispy_field }}
+    </div>
+    <hr />
+    <h4>Datos Fiscales</h4>
+    <div class="form-row">
+      {{ form.contribuyente_iva|as_crispy_field }} {{
+      form.agente_retencion|as_crispy_field }} {{
+      form.contribuyente_especial|as_crispy_field }} {{
+      form.tipo_contribuyente|as_crispy_field }}
+    </div>
+    <hr />
+    <h4>Contacto Principal</h4>
+    <div class="form-row">
+      {{ form.nombre_contacto|as_crispy_field }} {{
+      form.telefono_contacto|as_crispy_field }} {{
+      form.email_contacto|as_crispy_field }}
+    </div>
+    <hr />
+    <h4>Ubicación</h4>
+    <div class="form-row">
+      {{ form.estado|as_crispy_field }} {{ form.ciudad|as_crispy_field }} {{
+      form.municipio|as_crispy_field }} {{ form.parroquia|as_crispy_field }} {{
+      form.direccion|as_crispy_field }} {{ form.zona_postal|as_crispy_field }}
+      {{ form.latitud|as_crispy_field }} {{ form.longitud|as_crispy_field }}
+    </div>
+    <hr />
+    <h4>Observaciones</h4>
+    <div class="form-row">{{ form.observaciones|as_crispy_field }}</div>
+    <div style="margin-top: 24px; text-align: right">
+      <button type="submit" class="primary-button">Guardar</button>
+    </div>
+  </form>
+</div>
 {% endblock %}

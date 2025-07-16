@@ -1,7 +1,133 @@
-{% extends 'base.html' %} {% block content %}
-<h1>Iniciar Sesión</h1>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Iniciar Sesión</button>
-</form>
+{% extends 'base_auth.html' %} {% load static %} {% load crispy_forms_tags %}
+{%block extra_head %}
+<style>
+  .login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .auth-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text, #222);
+    text-align: center;
+  }
+  .login-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary, #555);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .login-card {
+    background: var(--color-bg-card, #fff);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2.5rem 2.2rem 2rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.dark-mode .login-card {
+    background: #263340;
+    color: #f3f3f3;
+  }
+  body.dark-mode .auth-title,
+  body.dark-mode .login-subtitle,
+  body.dark-mode label,
+  body.dark-mode .auth-link {
+    color: #f3f3f3;
+  }
+  body.dark-mode input {
+    background: #1a2332;
+    color: #f3f3f3;
+    border: 1px solid #444;
+  }
+  body.dark-mode .login-btn {
+    background-color: #3b82f6;
+    color: #fff;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+  }
+  label {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+  .required-asterisk {
+    color: #e53935;
+    margin-left: 2px;
+    font-size: 1.1em;
+    vertical-align: middle;
+  }
+  input {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .login-btn {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.7rem 0;
+    border-radius: 8px;
+    background-color: var(--color-primary, #1a73e8);
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  .login-footer {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .auth-link {
+    color: var(--color-primary, #1a73e8);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %} {% block content %}
+  <div class="login-header">
+    <h2 class="auth-title">Iniciar Sesión</h2>
+    <p class="login-subtitle">Accede al Sistema de Inteligencia de Ventas</p>
+  </div>
+  <form method="post">
+    {% csrf_token %} {{ form.non_field_errors }}
+    <div class="input-group">
+      <label for="{{ form.username.id_for_label }}">
+        {{ form.username.label }}<span class="required-asterisk">*</span>
+      </label>
+      {{ form.username }}
+    </div>
+    <div class="input-group">
+      <label for="{{ form.password.id_for_label }}">
+        {{ form.password.label }}<span class="required-asterisk">*</span>
+      </label>
+      {{ form.password }}
+    </div>
+    <button type="submit" class="login-btn">Iniciar Sesión</button>
+    <div class="login-footer">
+      <a href="{% url 'users:register' %}" class="auth-link"
+        >¿No tienes cuenta? Regístrate</a
+      >
+    </div>
+  </form>
+</div>
 {% endblock %}

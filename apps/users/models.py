@@ -20,6 +20,17 @@ class CustomUser(AbstractUser):
         verbose_name='user permissions',
     )
 
+    THEME_CHOICES = [
+        ("light", "Claro"),
+        ("dark", "Oscuro"),
+    ]
+    theme_preference = models.CharField(
+        max_length=10,
+        choices=THEME_CHOICES,
+        default="light",
+        verbose_name="Preferencia de tema"
+    )
+
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'

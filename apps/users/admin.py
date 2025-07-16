@@ -26,7 +26,13 @@ class CustomUserAdmin(admin.ModelAdmin):
         'is_staff',
     )
     list_filter = ('sucursal', 'rol', 'is_active', 'is_staff')
-    search_fields = ('first_name', 'last_name', 'username', 'email', 'codigo_asesor', 'rol', 'sucursal')
+    search_fields = (
+        'first_name',
+        'last_name',
+        'username',
+        'email',
+        'codigo_asesor',
+    )
     ordering = ('email',)
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
@@ -41,6 +47,28 @@ class CustomUserAdmin(admin.ModelAdmin):
     )
     list_per_page = 25
 
+    readonly_fields = ()  # Asegura que ningún campo sea solo lectura
+
+    def get_readonly_fields(self, request, obj=None):
+        # Permite editar todos los campos al crear y editar usuarios
+        return self.readonly_fields
+
     def save_model(self, request, obj, form, change):
         obj.username = obj.email  # El usuario siempre será el correo
         super().save_model(request, obj, form, change)
+
+    def has_change_permission(self, request, obj=None):
+        # Permite que el admin pueda editar cualquier usuario
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_view_permission(self, request, obj=None):
+        # Permite que el admin pueda ver cualquier usuario
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_delete_permission(self, request, obj=None):
+        # Permite que el admin pueda eliminar cualquier usuario
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_add_permission(self, request):
+        # Permite que el admin pueda agregar usuarios
+        return request.user.is_superuser or request.user.is_staff

@@ -1,8 +1,133 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Lista de Clientes</h1>
-<ul>
-  {% for client in clients %}
-  <li>{{ client.name }} - {{ client.email }}</li>
-  {% endfor %}
-</ul>
+<div class="container" style="max-width: 1200px; margin: 0 auto">
+  <h2 style="margin-top: 5px; margin-bottom: 5px">Clientes Registrados</h2>
+  <div style="margin-bottom: 18px; text-align: right">
+    <a
+      href="{% url 'clients:client_form' %}"
+      class="primary-button"
+      style="
+        font-size: 0.8em;
+        padding: 4px 14px;
+        min-height: 22px;
+        line-height: 1.1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+      "
+    >
+      Registrar
+    </a>
+  </div>
+  <style>
+    body.dark-mode .neumorphic-card {
+      background: #23272f !important;
+      box-shadow: 0 2px 16px #1113 !important;
+    }
+    body.dark-mode .table {
+      background: #23272f !important;
+      color: #f1f1f1 !important;
+    }
+    body.dark-mode .table th {
+      background: #23272f !important;
+      color: #f1f1f1 !important;
+    }
+    body.dark-mode .table td {
+      background: #23272f !important;
+      color: #f1f1f1 !important;
+    }
+    body.dark-mode .primary-button {
+      background: #23272f !important;
+      color: #fff !important;
+      border: 1px solid #444 !important;
+    }
+    body.dark-mode .primary-button:hover {
+      background: #444 !important;
+      color: #fff !important;
+    }
+  </style>
+  <style>
+    .neumorphic-card {
+      border-radius: 18px 18px 18px 18px !important;
+      overflow: hidden;
+    }
+    .table thead tr:first-child th:first-child {
+      border-top-left-radius: 18px;
+    }
+    .table thead tr:first-child th:last-child {
+      border-top-right-radius: 18px;
+    }
+    .table tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 18px;
+    }
+    .table tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 18px;
+    }
+  </style>
+  <div
+    class="neumorphic-card"
+    style="
+      padding: 0;
+      background: #fff;
+      box-shadow: 0 2px 16px #e0e0e0;
+      font-size: 0.8em;
+    "
+  >
+    <table class="table" style="width: 100%; border-collapse: collapse">
+      <thead style="background: #f7f7f7; text-align: center">
+        <tr>
+          <th style="padding: 12px">Código</th>
+          <th style="padding: 12px">Razón Social</th>
+          <th style="padding: 12px">RIF</th>
+          <th style="padding: 12px">Sucursal</th>
+          <th style="padding: 12px">Asesor</th>
+          <th style="padding: 12px">Código Asesor</th>
+          <th style="padding: 12px">Potencial</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+        <tr style="border-bottom: 1px solid #eee; text-align: center">
+          <td style="padding: 10px">
+            <a
+              href="{% url 'clients:client_detail' client.id %}"
+              style="color: #007bff; text-decoration: none"
+              >{{ client.codigo_cliente }}</a
+            >
+          </td>
+          <td style="padding: 10px; text-align: left">
+            <a
+              href="{% url 'clients:client_detail' client.id %}"
+              style="color: #007bff; text-decoration: none"
+              >{{ client.nombre }}</a
+            >
+          </td>
+          <td style="padding: 10px">{{ client.rif|default_if_none:"" }}</td>
+          <td style="padding: 10px">{{ client.sucursal }}</td>
+          <td style="padding: 10px">
+            {% if client.asesor %} {{ client.asesor.first_name }} {{
+            client.asesor.last_name }} {% elif client.asesor_nombre %} {{
+            client.asesor_nombre }} {% else %} &nbsp; {% endif %}
+          </td>
+          <td style="padding: 10px">
+            {{ client.codigo_asesor|default_if_none:"" }}
+          </td>
+          <td style="padding: 10px">
+            {{ client.aggregate_total|default_if_none:"0" }}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td
+            colspan="7"
+            style="text-align: center; padding: 24px; color: #888"
+          >
+            No hay clientes registrados.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

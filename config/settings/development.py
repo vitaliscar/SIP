@@ -34,7 +34,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Nombre de la base de datos
+        'NAME': 'sales_intelligence',  # Nombre de la base de datos
         'USER': 'postgres',  # Usuario de PostgreSQL
         'PASSWORD': 'Joaquin.0305.',  # Contraseña del usuario
         'HOST': 'localhost',  # Dirección del servidor

@@ -1,0 +1,24 @@
+{% extends 'admin/base_site.html' %} {% block content %}
+<h1>Potenciales de compra para {{ cliente.nombre }}</h1>
+<table class="adminlist">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Potencial (L)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for potencial in potenciales %}
+    <tr>
+      <td>{{ potencial.producto.name }}</td>
+      <td>{{ potencial.potencial|floatformat:2 }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="2">Sin potenciales registrados.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ request.META.HTTP_REFERER }}" class="button">Volver</a>
+{% endblock %}

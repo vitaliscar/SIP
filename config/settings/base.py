@@ -4,6 +4,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -20,7 +21,13 @@ INSTALLED_APPS = [
     'apps.reporting',
     'apps.ai_models',
     'apps.core',
+    'django_extensions',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 DATABASES = {
     'default': {
@@ -44,3 +51,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Usar el modelo de usuario personalizado
+AUTH_USER_MODEL = 'users.CustomUser'

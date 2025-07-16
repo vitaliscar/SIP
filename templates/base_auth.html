@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Acceso | Sistema de Inteligencia de Ventas{% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'css/REFRESH LOGO.png' %}"
+    />
+
+    {% block extra_head %}
+    <style>
+      .auth-logo {
+        max-width: 70px;
+        height: auto;
+        margin-bottom: 1.2rem;
+        /* Si tienes un logo alternativo para modo oscuro, puedes usar filter: invert(1); */
+        transition: filter 0.3s;
+      }
+      .auth-container {
+        background: var(--color-bg-card, #fff);
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem 2.2rem 2rem 2.2rem;
+        max-width: 400px;
+        margin: 2rem auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background 0.3s, color 0.3s;
+      }
+      body.dark-mode .auth-container {
+        background: #263340;
+        color: #f3f3f3;
+      }
+      body.dark-mode .auth-logo {
+        filter: brightness(0.85) contrast(1.2);
+      }
+    </style>
+    {% endblock %}
+  </head>
+  <body class="app auth-page">
+    <!-- Botón flotante de alternar tema -->
+    <button class="theme-toggle" aria-label="Alternar modo oscuro">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-moon"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+    <div class="auth-container">
+      <img
+        src="{% static 'css/REFRESH LOGO.png' %}"
+        alt="Logo"
+        class="auth-logo"
+      />
+      {% block content %}{% endblock %}
+    </div>
+    <script>
+      // Alternar modo oscuro con el botón flotante
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.querySelector(".theme-toggle");
+        const body = document.body;
+        themeToggle.addEventListener("click", function () {
+          body.classList.toggle("dark-mode");
+        });
+      });
+    </script>
+  </body>
+</html>

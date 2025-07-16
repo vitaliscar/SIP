@@ -8,11 +8,11 @@
     <!-- Enlaza nuestros archivos CSS, usando el tag static de Django -->
     <link rel="stylesheet" href="{% static 'css/variables.css' %}" />
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-    <!-- Fuente Inter de Google Fonts para una tipografía moderna y legible -->
+    <!-- Fuente Montserrat de Google Fonts para todo el proyecto -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -21,48 +21,80 @@
       href="{% static 'css/REFRESH LOGO.png' %}"
     />
     <style>
+      /* Fuente global Montserrat */
+      html,
+      body,
+      .app,
+      .container,
+      .neumorphic-card,
+      .table,
+      .primary-button,
+      .secondary-button,
+      input,
+      select,
+      textarea,
+      button {
+        font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+      }
       /* Estilos para el botón de alternar tema dentro de la barra superior */
       .theme-toggle {
-        color: var(--text-color-primary); /* Color del icono */
-        background-color: transparent; /* Fondo transparente */
-        border: line
+        color: var(--text-color-primary);
+        background-color: transparent;
+        border: line;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease;
-        margin-right: 10px; /* Espacio a la derecha de los enlaces */
+        margin-right: 10px;
       }
 
       .theme-toggle:hover {
-        background-color: var(
-          --primary-color
-        ); /* Cambia el color al pasar el ratón */
-        color: var(
-          --white-color
-        ); /* Cambia el color del icono al pasar el ratón */
+        background-color: var(--primary-color);
+        color: var(--white-color);
       }
 
       .theme-toggle svg {
-        width: 22px; /* Tamaño del SVG dentro del botón */
-        height: 22px; /* Tamaño del SVG dentro del botón */
+        width: 22px;
+        height: 22px;
+      }
+
+      /* Iconos de la barra lateral: negro en claro, blanco en oscuro */
+      .sidebar__icon {
+        stroke: #111 !important;
+        color: #111 !important;
+        transition: none !important;
+      }
+      .sidebar__link--active .sidebar__icon,
+      .sidebar__link:hover .sidebar__icon {
+        stroke: #111 !important;
+        color: #111 !important;
+        filter: none !important;
+      }
+      body.dark-mode .sidebar__icon {
+        stroke: #fff !important;
+        color: #fff !important;
+      }
+      body.dark-mode .sidebar__link--active .sidebar__icon,
+      body.dark-mode .sidebar__link:hover .sidebar__icon {
+        stroke: #fff !important;
+        color: #fff !important;
+        filter: none !important;
       }
 
       /* Ajustes para la barra superior para alinear los elementos */
       .top-bar__actions {
         display: flex;
         align-items: center;
-        gap: 15px; /* Espacio entre los elementos de la barra superior */
+        gap: 15px;
       }
 
-      /* Asegúrate de que el main-area no tenga padding extra si el botón ya no es flotante */
       .main-area {
-        padding-top: 0; /* Elimina el padding superior si ya no es necesario */
-        padding-left: 0; /* Elimina el padding izquierdo si ya no es necesario */
-        margin-left: 260px; /* Añadido para respetar el espacio del sidebar */
+        padding-top: 0;
+        padding-left: 0;
+        margin-left: 260px;
       }
 
-      /* Media query para pantallas más pequeñas, si es necesario ajustar la posición */
       @media (max-width: 768px) {
         .theme-toggle {
           width: 32px;
@@ -79,7 +111,9 @@
       }
     </style>
   </head>
-  <body class="app">
+  <body
+    class="app{% if user.is_authenticated and user.theme_preference == 'dark' %} dark-mode{% endif %}"
+  >
     <div class="app-wrapper">
       <!-- Barra lateral -->
       <aside class="sidebar">
@@ -129,12 +163,12 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="sidebar__icon feather feather-users"
+                  class="sidebar__icon"
                 >
-                  <path d="M17 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M7 21v-2a4 4 0 0 1 3-3.87"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <circle cx="8" cy="12" r="3" />
+                  <line x1="14" y1="10" x2="18" y2="10" />
+                  <line x1="14" y1="14" x2="18" y2="14" />
                 </svg>
                 Clientes
               </a>

@@ -4,13 +4,35 @@ from django.urls import reverse_lazy
 from .models import Sucursal
 
 def client_list(request):
-    return render(request, 'clients/client_list.html')
+    from .models import Client
+    from django.db.models import Sum
+    clients = Client.objects.all().annotate(
+        aggregate_total=Sum('potenciales__potencial')
+    ).order_by('nombre')
+    return render(request, 'clients/client_list.html', {'clients': clients})
 
 def client_detail(request, pk):
-    return render(request, 'clients/client_detail.html')
+    from .models import Client
+    from django.db.models import Sum
+    client = Client.objects.prefetch_related('potenciales__producto').get(pk=pk)
+    potenciales = client.potenciales.select_related('producto').all()
+    potencial_total = potenciales.aggregate(total=Sum('potencial'))['total']
+    return render(request, 'clients/client_detail.html', {
+        'client': client,
+        'potenciales': potenciales,
+        'potencial_total': potencial_total,
+    })
 
 def client_form(request):
-    return render(request, 'clients/client_form.html')
+    from .forms import ClientForm
+    if request.method == 'POST':
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'clients/client_form.html', {'form': form, 'success': True})
+    else:
+        form = ClientForm()
+    return render(request, 'clients/client_form.html', {'form': form})
 
 class SucursalListView(ListView):
     model = Sucursal

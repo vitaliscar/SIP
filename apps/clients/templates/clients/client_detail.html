@@ -1,6 +1,125 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Detalles del Cliente</h1>
-<p>Nombre: {{ client.name }}</p>
-<p>Email: {{ client.email }}</p>
-<p>Potencial de Compra: {{ client.potential_purchase }}</p>
+<div class="container" style="max-width: 900px; margin: 0 auto">
+  <h2 style="margin-top: 30px; margin-bottom: 20px">Detalle del Cliente</h2>
+  <div
+    class="neumorphic-card"
+    style="
+      padding: 32px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 2px 16px #e0e0e0;
+    "
+  >
+    <h4>Datos Generales</h4>
+    <div class="row">
+      <div><b>Código:</b> {{ client.codigo_cliente }}</div>
+      <div><b>Razón Social:</b> {{ client.nombre }}</div>
+      <div><b>RIF:</b> {{ client.rif }}</div>
+      <div><b>Tipo de Cliente:</b> {{ client.tipo_cliente }}</div>
+      <div><b>Estatus:</b> {{ client.estatus }}</div>
+      <div><b>Fecha de Registro:</b> {{ client.fecha_registro }}</div>
+      <div><b>Sucursal:</b> {{ client.sucursal }}</div>
+    </div>
+    <hr />
+    <h4>Datos Comerciales</h4>
+    <div class="row">
+      <div>
+        <b>Asesor:</b> {% if client.asesor %}{{
+        client.asesor.get_full_name|default:client.asesor_nombre }}{% else %}{{
+        client.asesor_nombre }}{% endif %}
+      </div>
+      <div><b>Código Asesor:</b> {{ client.codigo_asesor }}</div>
+      <div><b>Canal de Venta:</b> {{ client.canal_venta }}</div>
+      <div><b>Segmento:</b> {{ client.segmento }}</div>
+      <div><b>Grupo:</b> {{ client.grupo }}</div>
+      <div><b>Subgrupo:</b> {{ client.subgrupo }}</div>
+      <div><b>Clasificación:</b> {{ client.clasificacion }}</div>
+      <div><b>Frecuencia de Visita:</b> {{ client.frecuencia_visita }}</div>
+      <div><b>Ruta:</b> {{ client.ruta }}</div>
+    </div>
+    <hr />
+    <h4>Datos Fiscales</h4>
+    <div class="row">
+      <div>
+        <b>Contribuyente IVA:</b> {{ client.contribuyente_iva|yesno:"Sí,No" }}
+      </div>
+      <div>
+        <b>Agente de Retención:</b> {{ client.agente_retencion|yesno:"Sí,No" }}
+      </div>
+      <div>
+        <b>Contribuyente Especial:</b> {{
+        client.contribuyente_especial|yesno:"Sí,No" }}
+      </div>
+      <div><b>Tipo de Contribuyente:</b> {{ client.tipo_contribuyente }}</div>
+    </div>
+    <hr />
+    <h4>Contacto Principal</h4>
+    <div class="row">
+      <div><b>Nombre:</b> {{ client.nombre_contacto }}</div>
+      <div><b>Teléfono:</b> {{ client.telefono_contacto }}</div>
+      <div><b>Email:</b> {{ client.email_contacto }}</div>
+    </div>
+    <hr />
+    <h4>Ubicación</h4>
+    <div class="row">
+      <div><b>Estado:</b> {{ client.estado }}</div>
+      <div><b>Ciudad:</b> {{ client.ciudad }}</div>
+      <div><b>Municipio:</b> {{ client.municipio }}</div>
+      <div><b>Parroquia:</b> {{ client.parroquia }}</div>
+      <div><b>Dirección:</b> {{ client.direccion }}</div>
+      <div><b>Zona Postal:</b> {{ client.zona_postal }}</div>
+      <div><b>Latitud:</b> {{ client.latitud }}</div>
+      <div><b>Longitud:</b> {{ client.longitud }}</div>
+    </div>
+    <hr />
+    <h4>Observaciones</h4>
+    <div class="row">
+      <div>{{ client.observaciones }}</div>
+    </div>
+    <hr />
+    <h4>Potencial de Compra</h4>
+    <div class="row">
+      <div>
+        <b>Potencial Total (L):</b> {{ potencial_total|default_if_none:"0" }}
+      </div>
+    </div>
+    <div style="margin-top: 12px">
+      <table class="table" style="width: 100%; border-collapse: collapse">
+        <thead style="background: #f7f7f7">
+          <tr>
+            <th style="padding: 8px">Producto</th>
+            <th style="padding: 8px">Unidad Empaque</th>
+            <th style="padding: 8px">Litros/Empaque</th>
+            <th style="padding: 8px">Potencial (L)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in potenciales %}
+          <tr>
+            <td style="padding: 8px">{{ p.producto.name }}</td>
+            <td style="padding: 8px">
+              {{ p.unidad_empaque|default_if_none:"" }}
+            </td>
+            <td style="padding: 8px">
+              {{ p.litros_empaque|default_if_none:"" }}
+            </td>
+            <td style="padding: 8px">{{ p.potencial|default_if_none:"" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" style="text-align: center; color: #888">
+              Sin productos asociados.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 24px; text-align: right">
+      <a href="{% url 'clients:client_list' %}" class="secondary-button"
+        >Volver a la lista</a
+      >
+    </div>
+  </div>
+</div>
 {% endblock %}
