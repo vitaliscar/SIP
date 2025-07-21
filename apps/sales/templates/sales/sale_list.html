@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Listado de Ventas</h2>
+<table class="table">
+  <tr>
+    <th>Factura</th>
+    <th>Compañía</th>
+    <th>Sucursal</th>
+    <th>Cantidad</th>
+  </tr>
+  {% for sale in sales %}
+  <tr>
+    <td>{{ sale.numero_factura }}</td>
+    <td>{{ sale.compania }}</td>
+    <td>{{ sale.sucursal }}</td>
+    <td>{{ sale.cantidad }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

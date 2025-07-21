@@ -75,10 +75,10 @@ class PotencialDeCompra(models.Model):
         verbose_name_plural = 'Potenciales de compra'
 
     def clean(self):
-        # Validación cruzada: si hay asesor y código_asesor, deben coincidir
-        if self.asesor and self.codigo_asesor:
-            if self.asesor.codigo_asesor != self.codigo_asesor:
-                raise ValidationError('El código de asesor no coincide con el usuario asignado.')
+        """Verifica coherencia con el asesor asignado al cliente."""
+        if self.cliente.asesor and self.cliente.codigo_asesor:
+            if self.cliente.asesor.codigo_asesor != self.cliente.codigo_asesor:
+                raise ValidationError('El código de asesor no coincide con el usuario asignado al cliente.')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

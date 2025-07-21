@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Registra tus modelos aquí.
+from .models import Quote, Sale
+
+
+@admin.register(Quote)
+class QuoteAdmin(admin.ModelAdmin):
+    list_display = ("name", "total")
+
+
+@admin.register(Sale)
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ("numero_factura", "compania", "sucursal", "cantidad")

@@ -16,6 +16,7 @@ El objetivo final es que SIP sea el núcleo digital de la operación comercial, 
 
 ## Características principales
 - Gestión de clientes, sucursales, productos, ventas y usuarios
+- Consulta de ventas existentes mediante el modelo `Sale`
 - Panel de administración personalizado
 - Importación masiva de datos
 - Integración con modelos de IA y reportes
@@ -26,7 +27,7 @@ El objetivo final es que SIP sea el núcleo digital de la operación comercial, 
 - `apps/`: Aplicaciones principales (clients, users, products, sales, goals, reporting, ai_models, core)
     - **clients/templates/clients/**: client_detail.html, client_form.html, client_list.html, sucursal_detail.html, sucursal_form.html, sucursal_list.html
     - **products/templates/products/**: product_detail.html, product_form.html, product_list.html
-    - **sales/templates/sales/**: quote_detail.html, quote_form.html, quote_list.html
+    - **sales/templates/sales/**: quote_detail.html, quote_form.html, quote_list.html, sale_list.html
     - **goals/templates/goals/**: goal_form.html, goal_fulfillment.html, goal_list.html
     - **reporting/templates/reporting/**: dashboard.html
     - **users/templates/users/**: login.html, password_reset.html, password_reset_confirm.html, password_reset_done.html, profile.html, register.html, user_detail.html, user_list.html
