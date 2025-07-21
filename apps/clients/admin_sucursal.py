@@ -7,4 +7,3 @@ class SucursalAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
     ordering = ('nombre',)
     list_per_page = 25
-# ...existing code...
