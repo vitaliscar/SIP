@@ -19,6 +19,7 @@ El objetivo final es que SIP sea el núcleo digital de la operación comercial, 
 - Consulta de ventas existentes mediante el modelo `Sale`
 - Panel de administración personalizado
 - Importación masiva de datos
+- Comando `import_sales` para cargar ventas desde CSV
 - Integración con modelos de IA y reportes
 - Soporte para PostgreSQL
 - Arquitectura modular con Django
