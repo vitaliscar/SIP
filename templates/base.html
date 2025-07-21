@@ -200,8 +200,8 @@
             </li>
             <li class="sidebar__item">
               <a
-                href="{% url 'sales:quote_list' %}"
-                class="sidebar__link {% if request.resolver_match.url_name == 'quote_list' %}sidebar__link--active{% endif %}"
+                href="{% url 'sales:sale_list' %}"
+                class="sidebar__link {% if request.resolver_match.url_name == 'sale_list' %}sidebar__link--active{% endif %}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -436,7 +436,7 @@
                   Compare cotizaciones vs. facturas, analice cumplimiento por
                   mes, año, producto, asesor y más.
                 </p>
-                <a href="{% url 'sales:quote_list' %}" class="secondary-button"
+                <a href="{% url 'sales:sale_list' %}" class="secondary-button"
                   >Ver Ventas</a
                 >
               </div>
